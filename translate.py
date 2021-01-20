@@ -80,13 +80,19 @@ def batch_query(po,entries):
 
 def clean(entries):
     import re
-    balise1 = re.compile(r" {{/ GM}}")
-    balise2 = re.compile(r" {{/ CC}}")
-    missingspace = re.compile(r"([a-zé])\.([A-Z])")
+    balise1 = re.compile(r"\s+{{/\s+([GC][MC])}}")
+    balise2 = re.compile(r"{{([GC][MC])}}\s+")
+    removespace = re.compile(r"\$\s+\(")
+    missingspace = re.compile(r"([\w\)])([\.\?\!])([A-Z])")
+    troispoints = re.compile(r"\s+\.\.\.")
+    stars = re.compile(r"\*\s+([^\*]+)\s+\*")
     for e in entries:
-        e = balise1.sub("{{/GM}}", e)
-        e = balise2.sub("{{/CC}}", e)
-        e = missingspace.sub("\1. \2")
+        e.msgstr = balise1.sub(r"{{/\1}}", e.msgstr)
+        e.msgstr = balise2.sub(r"{{\1}}", e.msgstr)
+        e.msgstr = missingspace.sub(r"\1\2 \3",e.msgstr)
+        e.msgstr = removespace.sub(r"$(",e.msgstr)
+        e.msgstr = troispoints.sub(r"...",e.msgstr)
+        e.msgstr = stars.sub(r"*\1*",e.msgstr)
        
 
 if __name__ == "__main__":
