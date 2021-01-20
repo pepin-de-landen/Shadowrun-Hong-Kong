@@ -95,7 +95,7 @@ if __name__ == "__main__":
     print('fuzzies entries     =',len(po.fuzzy_entries()))
     
     entries = po.untranslated_entries()
-    batch_size=20#18
+    batch_size=1#18
     batch=0
     size=0
     
