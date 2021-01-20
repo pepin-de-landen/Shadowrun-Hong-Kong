@@ -78,7 +78,16 @@ def batch_query(po,entries):
             entree[i].msgstr=french[i]#.text
     return size
 
-
+def clean(entries):
+    import re
+    balise1 = re.compile(r" {{/ GM}}")
+    balise2 = re.compile(r" {{/ CC}}")
+    missingspace = re.compile(r"([a-zé])\.([A-Z])")
+    for e in entries:
+        e = balise1.sub("{{/GM}}", e)
+        e = balise2.sub("{{/CC}}", e)
+        e = missingspace.sub("\1. \2")
+       
 
 if __name__ == "__main__":
    
@@ -94,7 +103,11 @@ if __name__ == "__main__":
     print('untranslated entries=',len(po.untranslated_entries()))
     print('fuzzies entries     =',len(po.fuzzy_entries()))
     
-    entries = po.untranslated_entries()
+    entries = po.fuzzy_entries()
+    clean(entries)
+    po.save('ShadowrunHongKongFrenchCompletedAuto.po')
+    sys.exit()
+    
     batch_size=1#18
     batch=0
     size=0
