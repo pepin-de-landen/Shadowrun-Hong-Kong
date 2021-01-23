@@ -94,9 +94,16 @@ def clean(entries):
         e.msgstr = troispoints.sub(r"...",e.msgstr)
         e.msgstr = stars.sub(r"*\1*",e.msgstr)
        
+def update():
+    import subprocess
+    command=r"grep -v '#, fuzzy' ShadowrunHongKongFrench.po > FullFrench.po"
+    res = subprocess.check_output(command,text = True,shell=True)
+    print(res)
+    po = polib.pofile('FullFrench.po')
+    po.save_as_mofile(r'/mnt/c/Jeux/ShadowrunHongKong/SRHK_Data/StreamingAssets/ContentPacks/HongKong/data/loc/fr/ShadowrunHongKongFrench.mo')
+    po.save_as_mofile('FullFrench.mo')
 
-if __name__ == "__main__":
-   
+def translate():
     if len(sys.argv)>1:
         print('DEBUG ON')
         DEBUG=True
@@ -131,3 +138,9 @@ if __name__ == "__main__":
 
     po.save('ShadowrunHongKongFrenchCompletedAuto.po')
     print('nb_batch traités=',NBBATCHDONE)
+
+if __name__ == "__main__":
+       
+    update()
+    #translate()
+    
